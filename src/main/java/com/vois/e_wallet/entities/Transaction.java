@@ -3,13 +3,19 @@ package com.vois.e_wallet.entities;
 import com.vois.e_wallet.enums.TransactionType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="TRANSACTIONS")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
 	@Id
@@ -26,11 +32,9 @@ public class Transaction {
 
 	private LocalDateTime timestamp;
 	private Float amount;
+
 	@Enumerated(EnumType.STRING)
 	private TransactionType type;
-	@Nullable
-	private String description;
-
 
 
 }

@@ -2,14 +2,21 @@ package com.vois.e_wallet.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table(name="WALLETS")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallet {
 
 	@Id
@@ -23,10 +30,16 @@ public class Wallet {
 	private User user;
 
 	@OneToMany(mappedBy = "fromWallet")
-	private List<Transaction> sentTransactions;
+	@Builder.Default
+
+
+	private List<Transaction> sentTransactions =  new ArrayList<>();;
 
 	@OneToMany(mappedBy = "toWallet")
-	private List<Transaction> receivedTransactions;
+	@Builder.Default
+
+
+	private List<Transaction> receivedTransactions = new ArrayList<>();
 
 
 

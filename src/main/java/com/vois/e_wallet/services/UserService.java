@@ -1,6 +1,7 @@
 package com.vois.e_wallet.services;
 
 import com.vois.e_wallet.entities.User;
+import com.vois.e_wallet.entities.Wallet;
 import com.vois.e_wallet.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,15 @@ public class UserService implements GenericService<User, String> {
 
 	@Override
 	public User save(User user) {
+		if(user.getWallet() == null)
+		{
+			Wallet wallet = Wallet.builder().balance((float) 0).build();
+			user.setWallet(wallet);
+		}
+
+
+
+
 		return userRepository.save(user);
 	}
 
