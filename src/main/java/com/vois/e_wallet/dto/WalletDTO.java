@@ -1,5 +1,6 @@
 package com.vois.e_wallet.dto;
 
+import com.vois.e_wallet.entities.Wallet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +18,11 @@ public class WalletDTO {
 	private Float balance;
 	private String userId;
 
-//	@Builder.Default
-//	private List<String> sentTransactionsIds = new ArrayList<>();
-//	@Builder.Default
-//	private List<String> receivedTransactionsIds = new ArrayList<>();
+
+    public WalletDTO(Wallet wallet)
+    {
+        this.id = wallet.getId();
+        this.balance = wallet.getBalance();
+        this.userId = wallet.getUser().getId();
+    }
 }

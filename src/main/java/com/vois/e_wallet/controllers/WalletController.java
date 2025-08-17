@@ -17,17 +17,17 @@ public class WalletController {
 
 
 	@GetMapping
-	public List<Wallet> findAllWallets() {
+	public List<WalletDTO> findAllWallets() {
 		return WalletService.findAll();
 	}
 
 	@GetMapping("/{id}")
-	public WalletDTO findWalletById(@PathVariable String id) {
+	public Optional<WalletDTO> findWalletById(@PathVariable String id) {
 		return WalletService.findById(id);
 	}
 
 	@PostMapping
-	public Wallet saveWallet(@RequestBody Wallet Wallet) {
+	public WalletDTO saveWallet(@RequestBody Wallet Wallet) {
 		return WalletService.save(Wallet);
 
 	}
@@ -38,7 +38,7 @@ public class WalletController {
 	}
 
 	@PutMapping("/{id}")
-	public Wallet updateWallet(@PathVariable String id, @RequestBody Wallet Wallet) {
+	public WalletDTO updateWallet(@PathVariable String id, @RequestBody Wallet Wallet) {
 		return WalletService.update(id, Wallet);
 	}
 

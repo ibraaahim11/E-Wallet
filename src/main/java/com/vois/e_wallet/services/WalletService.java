@@ -8,47 +8,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class WalletService  {
+public class WalletService implements GenericService<WalletDTO,String,Wallet> {
 	private final WalletRepository walletRepository;
 
 
 
-	public Wallet save(Wallet Wallet) {
-		return walletRepository.save(Wallet);
+    @Override
+	public WalletDTO save(Wallet Wallet) {
+		return new WalletDTO(walletRepository.save(Wallet));
 	}
 
 
-	public WalletDTO findById(String id) {
-		Optional<Wallet> optionalWallet = walletRepository.findById(id);
+    @Override
+	public Optional<WalletDTO> findById(String id) {
+		return walletRepository.findById(id).map(WalletDTO::new);
 
-		if (optionalWallet.isEmpty()) {
-			return null;
-		} else {
-			Wallet wallet = optionalWallet.get();
-			return WalletDTO.builder().id(wallet.getId()).balance(wallet.getBalance()).userId(wallet.getUser().getId()).build();
-		}
 	}
 
-	public List<Wallet> findAll() {
-		return walletRepository.findAll();
+    @Override
+	public List<WalletDTO> findAll() {
+		return walletRepository.findAll().stream().map(WalletDTO::new).collect(Collectors.toList());
 	}
 
 
-	public Wallet update(String id, Wallet Wallet) {
+    @Override
+	public WalletDTO update(String id, Wallet Wallet) {
 		if (id == null) {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
 
 		walletRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No Wallet found with Id " + id));
 
-		return walletRepository.save(Wallet);
+        return new WalletDTO(walletRepository.save(Wallet));
 
 
 	}
 
+    @Override
 	public void deleteById(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("Id cannot be empty.");
@@ -57,7 +57,7 @@ public class WalletService  {
 
 	}
 
-	public WalletDTO addMoney(String walletId, Float amount) {
+	public Wallet addMoney(String walletId, Float amount) {
 		if (walletId == null) {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
@@ -65,13 +65,13 @@ public class WalletService  {
 		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("No Wallet found with Id " + walletId));
 
 		wallet.setBalance(wallet.getBalance() + amount);
-		Wallet savedWallet = walletRepository.save(wallet);
+		return walletRepository.save(wallet);
 
-		return WalletDTO.builder().id(savedWallet.getId()).balance(savedWallet.getBalance()).build();
+
 
 	}
 
-	public WalletDTO subtractMoney(String walletId, Float amount) {
+	public Wallet subtractMoney(String walletId, Float amount) {
 		if (walletId == null) {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
@@ -79,9 +79,8 @@ public class WalletService  {
 		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("No Wallet found with Id " + walletId));
 
 		wallet.setBalance(wallet.getBalance() - amount);
-		Wallet savedWallet = walletRepository.save(wallet);
+		return walletRepository.save(wallet);
 
-		return WalletDTO.builder().id(savedWallet.getId()).balance(savedWallet.getBalance()).userId(savedWallet.getUser().getId()).build();
 
 	}
 

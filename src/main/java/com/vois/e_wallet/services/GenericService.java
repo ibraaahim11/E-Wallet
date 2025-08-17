@@ -5,16 +5,16 @@ import com.vois.e_wallet.entities.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface GenericService<T, ID> {
+public interface GenericService<DTO, ID,E> {
 
-	T save(T entity);
+	DTO save(E entity);
 
-	Optional<T> findById(ID id);
+	Optional<DTO> findById(ID id);
 
 
-	List<T> findAll();
+	List<DTO> findAll();
 
-	T update(ID id, T entity);
+	DTO update(ID id, E entity);
 
 
 	void deleteById(ID id);

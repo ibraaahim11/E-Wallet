@@ -1,8 +1,10 @@
 package com.vois.e_wallet.controllers;
 
+import com.vois.e_wallet.dto.UserDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.services.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,23 +12,23 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
 
 
 	@GetMapping
-	public List<User> findAllUsers() {
+	public List<UserDTO> findAllUsers() {
 		return userService.findAll();
 	}
 
 	@GetMapping("/{id}")
-	public Optional<User> findUserById(@PathVariable String id) {
+	public Optional<UserDTO> findUserById(@PathVariable String id) {
 		return userService.findById(id);
 	}
 
 	@PostMapping
-	public User saveUser(@RequestBody User user) {
+	public UserDTO saveUser(@RequestBody User user) {
 		return userService.save(user);
 
 	}
@@ -37,7 +39,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public User updateUser(@PathVariable String id, @RequestBody User user) {
+	public UserDTO updateUser(@PathVariable String id, @RequestBody User user) {
 		return userService.update(id, user);
 	}
 

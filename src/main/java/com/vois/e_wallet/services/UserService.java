@@ -1,54 +1,61 @@
 package com.vois.e_wallet.services;
 
+import com.vois.e_wallet.dto.UserDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.entities.Wallet;
 import com.vois.e_wallet.repositories.UserRepository;
+import com.vois.e_wallet.repositories.WalletRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class UserService implements GenericService<User, String> {
+public class UserService implements GenericService<UserDTO, String,User> {
 	private final UserRepository userRepository;
+    private final WalletRepository walletRepository;
 
 
-	@Override
-	public User save(User user) {
+
+    @Override
+	public UserDTO save(User user) {
+
 		if(user.getWallet() == null)
 		{
-			Wallet wallet = Wallet.builder().balance((float) 0).build();
-			user.setWallet(wallet);
-		}
+            user.setWallet(Wallet.builder().balance(BigDecimal.ZERO.floatValue()).user(user).build());
+
+        }
 
 
 
 
-		return userRepository.save(user);
+		return new UserDTO(userRepository.save(user));
 	}
 
 
 	@Override
-	public Optional<User> findById(String id) {
-		return userRepository.findById(id);
+	public Optional<UserDTO> findById(String id) {
+		return userRepository.findById(id).map(UserDTO::new);
 	}
 
 	@Override
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public List<UserDTO> findAll() {
+		return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
 	}
 
 	@Override
-	public User update(String id, User user) {
+	public UserDTO update(String id, User user) {
 		if (id == null) {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
 
 		userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No user found with Id " + id));
 
-		return userRepository.save(user);
+		return new UserDTO(userRepository.save(user));
 
 
 	}
@@ -61,6 +68,8 @@ public class UserService implements GenericService<User, String> {
 		userRepository.deleteById(id);
 
 	}
+
+
 
 
 }

@@ -1,12 +1,10 @@
 package com.vois.e_wallet.controllers;
 
-import com.vois.e_wallet.dto.Deposit;
-import com.vois.e_wallet.dto.TransactionDTO;
-import com.vois.e_wallet.dto.Transfer;
-import com.vois.e_wallet.dto.Withdrawal;
+import com.vois.e_wallet.dto.*;
 import com.vois.e_wallet.entities.Transaction;
 import com.vois.e_wallet.services.TransactionService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,22 +13,24 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/transactions")
 @AllArgsConstructor
+
 public class TransactionController {
 	private final TransactionService transactionService;
 
 
-	@GetMapping
-	public List<Transaction> findAllTransactions() {
+
+    @GetMapping
+	public List<TransactionDTO> findAllTransactions() {
 		return transactionService.findAll();
 	}
 
 	@GetMapping("/{id}")
-	public Optional<Transaction> findTransactionById(@PathVariable String id) {
+	public Optional<TransactionDTO> findTransactionById(@PathVariable String id) {
 		return transactionService.findById(id);
 	}
 
 	@PostMapping
-	public Transaction saveTransaction(@RequestBody Transaction t) {
+	public TransactionDTO saveTransaction(@RequestBody Transaction t) {
 		return transactionService.save(t);
 
 	}
@@ -41,28 +41,28 @@ public class TransactionController {
 	}
 
 	@PutMapping("/{id}")
-	public Transaction updateTransaction(@PathVariable String id, @RequestBody Transaction t) {
+	public TransactionDTO updateTransaction(@PathVariable String id, @RequestBody Transaction t) {
 		return transactionService.update(id, t);
 	}
 
 	@PostMapping("/deposit")
-	public TransactionDTO deposit(@RequestBody Deposit deposit)
+	public TransactionDTO deposit(@RequestBody TransactionAction ta)
 	{
 
-		return transactionService.deposit(deposit);
+		return transactionService.makeTransaction(ta);
 	}
 
 	@PostMapping("/withdraw")
-	public TransactionDTO withdraw(@RequestBody Withdrawal withdrawal)
+	public TransactionDTO withdraw(@RequestBody TransactionAction ta)
 	{
 
-		return transactionService.withdraw(withdrawal);
+        return transactionService.makeTransaction(ta);
 	}
 	@PostMapping("/transfer")
-	public TransactionDTO transfer(@RequestBody Transfer transfer)
+	public TransactionDTO transfer(@RequestBody TransactionAction ta)
 	{
 
-		return transactionService.transfer(transfer);
+        return transactionService.makeTransaction(ta);
 	}
 
 }

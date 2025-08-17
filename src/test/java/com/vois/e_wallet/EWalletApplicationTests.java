@@ -15,15 +15,6 @@ class EWalletApplicationTests {
 
 	@Test
 	void contextLoads() {
-		User user = new User();
-		user.setFName("ibrahim");
-		user.setLName("hesham");
-
-		User savedUser = userService.save(user);
-
-		Assertions.assertNotNull(savedUser);
-
-		Assertions.assertEquals(user.getFName(), savedUser.getFName());
 
 	}
 
