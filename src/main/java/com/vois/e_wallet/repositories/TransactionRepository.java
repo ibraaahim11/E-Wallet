@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction,String> {
+public interface TransactionRepository extends GenericRepository<Transaction,String> {
 
 
 	@Query(value = "SELECT * FROM TRANSACTIONS WHERE type = 'REFUND'",nativeQuery = true)

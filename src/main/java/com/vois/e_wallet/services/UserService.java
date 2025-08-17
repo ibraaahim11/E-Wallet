@@ -3,6 +3,7 @@ package com.vois.e_wallet.services;
 import com.vois.e_wallet.dto.UserDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.entities.Wallet;
+import com.vois.e_wallet.repositories.GenericRepository;
 import com.vois.e_wallet.repositories.UserRepository;
 import com.vois.e_wallet.repositories.WalletRepository;
 import lombok.AllArgsConstructor;
@@ -14,12 +15,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-public class UserService implements GenericService<UserDTO, String,User> {
-	private final UserRepository userRepository;
-    private final WalletRepository walletRepository;
+public class UserService extends GenericServiceImpl<UserDTO, String, User>{
+    private final UserRepository userRepository;
 
-
+    public UserService(UserRepository ur)
+    {
+        super(ur);
+        this.userRepository = ur;
+    }
 
     @Override
 	public UserDTO save(User user) {
@@ -30,46 +33,13 @@ public class UserService implements GenericService<UserDTO, String,User> {
 
         }
 
-
-
-
 		return new UserDTO(userRepository.save(user));
 	}
 
-
-	@Override
-	public Optional<UserDTO> findById(String id) {
-		return userRepository.findById(id).map(UserDTO::new);
-	}
-
-	@Override
-	public List<UserDTO> findAll() {
-		return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
-	}
-
-	@Override
-	public UserDTO update(String id, User user) {
-		if (id == null) {
-			throw new IllegalArgumentException("Id cannot be empty.");
-		}
-
-		userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No user found with Id " + id));
-
-		return new UserDTO(userRepository.save(user));
-
-
-	}
-
-	@Override
-	public void deleteById(String id) {
-		if (id == null) {
-			throw new IllegalArgumentException("Id cannot be empty.");
-		}
-		userRepository.deleteById(id);
-
-	}
-
-
+    @Override
+    protected UserDTO convertToDTO(User entity) {
+        return new UserDTO(entity);
+    }
 
 
 }
