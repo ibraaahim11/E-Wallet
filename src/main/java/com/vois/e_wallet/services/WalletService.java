@@ -4,6 +4,10 @@ import com.vois.e_wallet.dto.TransactionAction;
 import com.vois.e_wallet.dto.WalletDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.entities.Wallet;
+import com.vois.e_wallet.errorHandler.InsufficientBalanceException;
+import com.vois.e_wallet.errorHandler.UserHasNoWalletException;
+import com.vois.e_wallet.errorHandler.UserNotFoundException;
+import com.vois.e_wallet.errorHandler.WalletNotFoundException;
 import com.vois.e_wallet.repositories.UserRepository;
 import com.vois.e_wallet.repositories.WalletRepository;
 import lombok.AllArgsConstructor;
@@ -31,7 +35,7 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
 
-		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("No Wallet found with Id " + walletId));
+		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("No Wallet found with Id " + walletId));
 
 		wallet.setBalance(wallet.getBalance() + amount);
 		return walletRepository.save(wallet);
@@ -45,7 +49,7 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
 			throw new IllegalArgumentException("Id cannot be empty.");
 		}
 
-		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("No Wallet found with Id " + walletId));
+		Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("No Wallet found with Id " + walletId));
 
 		wallet.setBalance(wallet.getBalance() - amount);
 		return walletRepository.save(wallet);
@@ -60,12 +64,12 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
         Optional<User> toUser = userRepository.findById(toUserId);
 
         if (toUser.isEmpty()) {
-            throw new IllegalArgumentException("No user with id: " + toUserId);
+            throw new UserNotFoundException(toUserId);
         }
 
         Wallet toWallet = toUser.get().getWallet();
         if (toWallet == null) {
-            throw new IllegalArgumentException("User with id " + toUserId + " does not have a wallet.");
+            throw new UserHasNoWalletException(toUserId);
         }
 
         return addMoney(toUser.get().getWallet().getId(), amount);
@@ -81,16 +85,16 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
         Optional<User> fromUser = userRepository.findById(fromUserId);
 
         if (fromUser.isEmpty()) {
-            throw new IllegalArgumentException("No user with id: " + fromUserId);
+            throw new UserNotFoundException(fromUserId);
         }
 
         Wallet fromWallet = fromUser.get().getWallet();
         if (fromWallet == null) {
-            throw new IllegalArgumentException("User with id " + fromUserId + " does not have a wallet.");
+            throw new UserHasNoWalletException(fromUserId);
         }
 
         if (amount > fromWallet.getBalance()) {
-            throw new IllegalArgumentException("Cannot withdraw more than balance amount. Withdrawal: " + amount + ", balance: " + fromWallet.getBalance());
+            throw new InsufficientBalanceException(amount,fromWallet.getBalance());
 
         }
 

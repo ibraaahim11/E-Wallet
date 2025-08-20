@@ -4,6 +4,8 @@ import com.vois.e_wallet.dto.WalletDTO;
 import com.vois.e_wallet.entities.Wallet;
 import com.vois.e_wallet.services.WalletService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +19,30 @@ public class WalletController {
 
 
 	@GetMapping
-	public List<WalletDTO> findAllWallets() {
-		return WalletService.findAll();
+	public ResponseEntity<List<WalletDTO> > findAllWallets() {
+		return new ResponseEntity<>(WalletService.findAll(), HttpStatus.OK) ;
 	}
 
 	@GetMapping("/{id}")
-	public Optional<WalletDTO> findWalletById(@PathVariable String id) {
-		return WalletService.findById(id);
+	public ResponseEntity<Optional<WalletDTO>>  findWalletById(@PathVariable String id) {
+        return new ResponseEntity<>(WalletService.findById(id), HttpStatus.OK) ;
 	}
 
 	@PostMapping
-	public WalletDTO saveWallet(@RequestBody Wallet Wallet) {
-		return WalletService.save(Wallet);
+	public ResponseEntity< WalletDTO>  saveWallet(@RequestBody Wallet Wallet) {
+        return new ResponseEntity<>(WalletService.save(Wallet), HttpStatus.CREATED) ;
 
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteWallet(@PathVariable String id) {
+	public ResponseEntity<Void>  deleteWallet(@PathVariable String id) {
 		WalletService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PutMapping("/{id}")
-	public WalletDTO updateWallet(@PathVariable String id, @RequestBody Wallet Wallet) {
-		return WalletService.update(id, Wallet);
+	public ResponseEntity<WalletDTO>  updateWallet(@PathVariable String id, @RequestBody Wallet Wallet) {
+        return new ResponseEntity<>(WalletService.update(id, Wallet), HttpStatus.OK) ;
 	}
 
 }
