@@ -22,6 +22,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 
+
 	private String fName;
 	private String lName;
 	private Integer age;

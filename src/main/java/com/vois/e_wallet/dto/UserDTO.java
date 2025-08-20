@@ -5,6 +5,8 @@ import com.vois.e_wallet.entities.Wallet;
 import com.vois.e_wallet.enums.Gender;
 import com.vois.e_wallet.enums.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,15 +19,25 @@ import java.time.LocalDate;
 public class UserDTO {
     private String id;
 
+
+    @NotBlank(message = "User's first name must not be blank.")
     private String fName;
+    @NotBlank(message = "User's last name must not be blank.")
+
     private String lName;
+
+
     private Integer age;
     @Enumerated(EnumType.STRING)
 
     private Gender gender;
+    @NotBlank(message = "User's email must not be blank.")
+    @Email(message = "Invalid user email.")
     private String email;
+
     private LocalDate joinDate;
     @Enumerated(EnumType.STRING)
+    @NotBlank(message = "User must have a role")
 
     private UserRole role;
 

@@ -2,6 +2,8 @@ package com.vois.e_wallet.dto;
 
 import com.vois.e_wallet.entities.Transaction;
 import com.vois.e_wallet.enums.TransactionType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +21,13 @@ public class TransactionDTO {
 	private String fromWalletId;
 	private String toWalletId;
 	private LocalDateTime timestamp;
-	private Float amount;
-	private TransactionType type;
+    @NotNull(message = "Transaction amount should be present.")
+    @PositiveOrZero(message = "Transaction amount should be positive or zero.")
+
+    private Float amount;
+    @NotNull(message = "Transaction type should be present.")
+
+    private TransactionType type;
 
     public TransactionDTO(Transaction transaction)
     {

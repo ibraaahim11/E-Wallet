@@ -1,10 +1,9 @@
 package com.vois.e_wallet.dto;
 
 import com.vois.e_wallet.entities.Wallet;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class WalletDTO {
 	private String id;
+    @NotNull(message = "Wallet should have a balance.")
+    @PositiveOrZero(message = "Wallet's balance should be positive or zero.")
+
+
 	private Float balance;
 	private String userId;
 
