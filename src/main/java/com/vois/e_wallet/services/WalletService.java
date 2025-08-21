@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
+public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet,WalletDTO> {
 	private final WalletRepository walletRepository;
     private final UserRepository userRepository;
 
@@ -105,6 +105,11 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
     protected WalletDTO convertToDTO(Wallet entity) {
         return new WalletDTO(entity);
     }
+
+	@Override
+	protected WalletDTO convertToResponseDTO(Wallet entity) {
+		return  new WalletDTO(entity);
+	}
 
 	@Override
 	protected Wallet convertToE(WalletDTO dto) {

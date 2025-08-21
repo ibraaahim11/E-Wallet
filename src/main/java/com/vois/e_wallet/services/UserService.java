@@ -1,27 +1,17 @@
 package com.vois.e_wallet.services;
 
-import com.vois.e_wallet.dto.UserDTO;
+import com.vois.e_wallet.dto.UserRegisterDTO;
+import com.vois.e_wallet.dto.UserResponseDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.entities.Wallet;
-import com.vois.e_wallet.enums.UserRole;
-import com.vois.e_wallet.repositories.GenericRepository;
 import com.vois.e_wallet.repositories.UserRepository;
-import com.vois.e_wallet.repositories.WalletRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.EnumUtils;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class UserService extends GenericServiceImpl<UserDTO, String, User>{
+public class UserService extends GenericServiceImpl<UserRegisterDTO, String, User,UserResponseDTO>{
     private final UserRepository userRepository;
 
     public UserService(UserRepository ur)
@@ -31,10 +21,10 @@ public class UserService extends GenericServiceImpl<UserDTO, String, User>{
     }
 
     @Override
-	public UserDTO save(UserDTO userDTO) {
+	public UserResponseDTO save(UserRegisterDTO userRegisterDTO) {
 
 
-		User user = convertToE(userDTO);
+		User user = convertToE(userRegisterDTO);
 
 		if(user.getWallet() == null )
 		{
@@ -52,10 +42,10 @@ public class UserService extends GenericServiceImpl<UserDTO, String, User>{
 
 
 
-		return convertToDTO(userRepository.save(user));
+		return convertToResponseDTO(userRepository.save(user));
 	}
 	@Override
-	public UserDTO update(String id, UserDTO userDTO)
+	public UserResponseDTO update(String id, UserRegisterDTO userRegisterDTO)
 	{
 		if (!userRepository.existsById(id)) {
 			throw new EntityNotFoundException("Entity not found");
@@ -63,21 +53,25 @@ public class UserService extends GenericServiceImpl<UserDTO, String, User>{
 
 		Wallet wallet = userRepository.findById(id).get().getWallet();
 
-		User user = convertToE(userDTO);
+		User user = convertToE(userRegisterDTO);
 		user.setWallet(wallet);
-		return convertToDTO(userRepository.save(user));
+		return convertToResponseDTO(userRepository.save(user));
 
 
 
 	}
 
     @Override
-    protected UserDTO convertToDTO(User entity) {
-        return new UserDTO(entity);
+    protected UserRegisterDTO convertToDTO(User entity) {
+        return new UserRegisterDTO(entity);
     }
 
+	protected UserResponseDTO convertToResponseDTO(User entity) {
+		return new UserResponseDTO(entity);
+	}
+
 	@Override
-	protected User convertToE(UserDTO dto) {
+	protected User convertToE(UserRegisterDTO dto) {
 		return new User(dto);
 	}
 

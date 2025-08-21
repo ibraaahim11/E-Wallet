@@ -21,7 +21,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
-public class TransactionService extends GenericServiceImpl<TransactionDTO,String,Transaction> {
+public class TransactionService extends GenericServiceImpl<TransactionDTO,String,Transaction,TransactionDTO> {
 
     private final TransactionRepository transactionRepository;
     private final WalletService walletService;
@@ -71,12 +71,17 @@ public class TransactionService extends GenericServiceImpl<TransactionDTO,String
 
         Transaction savedT = transactionRepository.save(transaction);
 
-        return convertToDTO(savedT);
+        return convertToResponseDTO(savedT);
 
     }
 
     @Override
     protected TransactionDTO convertToDTO(Transaction entity) {
+        return new TransactionDTO(entity);
+    }
+
+    @Override
+    protected TransactionDTO convertToResponseDTO(Transaction entity) {
         return new TransactionDTO(entity);
     }
 

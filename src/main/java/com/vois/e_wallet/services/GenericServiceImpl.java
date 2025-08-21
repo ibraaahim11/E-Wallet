@@ -8,36 +8,36 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class GenericServiceImpl<DTO,ID,E> implements GenericService<DTO,ID,E> {
+public abstract class GenericServiceImpl<DTO,ID,E,ResponseDTO> implements GenericService<DTO,ID,E,ResponseDTO> {
 
 
     protected final GenericRepository<E, ID> repository;
 
 
     @Override
-    public DTO save(DTO dto) {
+    public ResponseDTO save(DTO dto) {
 
         E savedEntity = repository.save(convertToE(dto));
-        return convertToDTO(savedEntity);
+        return convertToResponseDTO(savedEntity);
     }
 
     @Override
-    public Optional<DTO> findById(ID id) {
-        return repository.findById(id).map(this::convertToDTO);
+    public Optional<ResponseDTO> findById(ID id) {
+        return repository.findById(id).map(this::convertToResponseDTO);
     }
 
     @Override
-    public List<DTO> findAll() {
-        return repository.findAll().stream().map(this::convertToDTO).toList();
+    public List<ResponseDTO> findAll() {
+        return repository.findAll().stream().map(this::convertToResponseDTO).toList();
     }
 
     @Override
-    public DTO update(ID id, DTO dto) {
+    public ResponseDTO update(ID id, DTO dto) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Entity not found");
         }
         E updatedEntity = repository.save(convertToE(dto));
-        return convertToDTO(updatedEntity);
+        return convertToResponseDTO(updatedEntity);
     }
 
     @Override
@@ -46,6 +46,8 @@ public abstract class GenericServiceImpl<DTO,ID,E> implements GenericService<DTO
     }
 
     protected abstract DTO convertToDTO(E entity);
+    protected abstract ResponseDTO convertToResponseDTO(E entity);
+
     protected abstract E convertToE(DTO dto);
 
 }

@@ -1,10 +1,9 @@
 package com.vois.e_wallet.controllers;
 
-import com.vois.e_wallet.dto.UserDTO;
-import com.vois.e_wallet.entities.User;
+import com.vois.e_wallet.dto.UserRegisterDTO;
+import com.vois.e_wallet.dto.UserResponseDTO;
 import com.vois.e_wallet.services.UserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +20,17 @@ public class UserController {
 
 
 	@GetMapping
-	public ResponseEntity<List<UserDTO>> findAllUsers() {
+	public ResponseEntity<List<UserResponseDTO>> findAllUsers() {
 		return new ResponseEntity<> (userService.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<UserDTO>> findUserById(@PathVariable String id) {
+	public ResponseEntity<Optional<UserResponseDTO>> findUserById(@PathVariable String id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK) ;
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO u) {
+	public ResponseEntity<UserResponseDTO> saveUser(@Valid @RequestBody UserRegisterDTO u) {
         return new ResponseEntity<>(userService.save(u), HttpStatus.CREATED) ;
 
 	}
@@ -43,7 +42,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @Valid @RequestBody UserDTO u) {
+	public ResponseEntity<UserResponseDTO> updateUser(@PathVariable String id, @Valid @RequestBody UserRegisterDTO u) {
         return new ResponseEntity<>(userService.update(id, u), HttpStatus.OK) ;
 	}
 

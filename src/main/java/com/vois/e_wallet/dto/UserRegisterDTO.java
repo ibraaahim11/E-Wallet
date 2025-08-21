@@ -1,7 +1,6 @@
 package com.vois.e_wallet.dto;
 
 import com.vois.e_wallet.entities.User;
-import com.vois.e_wallet.entities.Wallet;
 import com.vois.e_wallet.enums.Gender;
 import com.vois.e_wallet.enums.UserRole;
 import jakarta.persistence.*;
@@ -17,7 +16,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserRegisterDTO {
     private String id;
 
 
@@ -27,6 +26,11 @@ public class UserDTO {
 
     private String lName;
 
+    @NotBlank(message = "User's username must not be blank.")
+    private String username;
+
+    @NotBlank(message = "User's password must not be blank.")
+    private String password;
 
     private Integer age;
     @Enumerated(EnumType.STRING)
@@ -43,9 +47,8 @@ public class UserDTO {
 
     private UserRole role;
 
-    private WalletDTO wallet;
 
-    public UserDTO(User user)
+    public UserRegisterDTO(User user)
     {
         if( user != null)
         {
@@ -57,8 +60,9 @@ public class UserDTO {
             this.email = user.getEmail();
             this .joinDate = user.getJoinDate();
             this.role = user.getRole();
+            this.password = user.getPassword();
+            this.username = user.getUsername();
 
-            this.wallet = new WalletDTO(user.getWallet());
         }
 
 
