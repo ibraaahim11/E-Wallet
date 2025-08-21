@@ -26,6 +26,7 @@ public class User {
 
 	private String fName;
 	private String lName;
+	@Column(unique = true)
 	private String username;
 	private String password;
 	private Integer age;
