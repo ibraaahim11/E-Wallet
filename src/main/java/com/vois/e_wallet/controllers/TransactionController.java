@@ -3,6 +3,7 @@ package com.vois.e_wallet.controllers;
 import com.vois.e_wallet.dto.*;
 import com.vois.e_wallet.entities.Transaction;
 import com.vois.e_wallet.services.TransactionService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class TransactionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<TransactionDTO> saveTransaction(@RequestBody Transaction t) {
+	public ResponseEntity<TransactionDTO> saveTransaction(@Valid @RequestBody TransactionDTO t) {
 		return new ResponseEntity<>(transactionService.save(t), HttpStatus.CREATED) ;
 
 	}
@@ -45,25 +46,25 @@ public class TransactionController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<TransactionDTO>  updateTransaction(@PathVariable String id, @RequestBody Transaction t) {
+	public ResponseEntity<TransactionDTO>  updateTransaction(@PathVariable String id, @Valid @RequestBody TransactionDTO t) {
 		return new ResponseEntity<>(transactionService.update(id, t),HttpStatus.OK) ;
 	}
 
 	@PostMapping("/deposit")
-	public ResponseEntity<TransactionDTO>  deposit(@RequestBody TransactionAction ta)
+	public ResponseEntity<TransactionDTO>  deposit(@Valid @RequestBody TransactionAction ta)
 	{
 
         return new ResponseEntity<>(transactionService.makeTransaction(ta),HttpStatus.CREATED) ;
 	}
 
 	@PostMapping("/withdraw")
-	public ResponseEntity<TransactionDTO>  withdraw(@RequestBody TransactionAction ta)
+	public ResponseEntity<TransactionDTO>  withdraw(@Valid @RequestBody TransactionAction ta)
 	{
 
         return new ResponseEntity<>(transactionService.makeTransaction(ta),HttpStatus.CREATED) ;
 	}
 	@PostMapping("/transfer")
-	public ResponseEntity<TransactionDTO>  transfer(@RequestBody TransactionAction ta)
+	public ResponseEntity<TransactionDTO>  transfer(@Valid @RequestBody TransactionAction ta)
 	{
 
         return new ResponseEntity<>(transactionService.makeTransaction(ta),HttpStatus.CREATED) ;

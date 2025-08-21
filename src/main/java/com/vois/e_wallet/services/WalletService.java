@@ -10,12 +10,10 @@ import com.vois.e_wallet.errorHandler.UserNotFoundException;
 import com.vois.e_wallet.errorHandler.WalletNotFoundException;
 import com.vois.e_wallet.repositories.UserRepository;
 import com.vois.e_wallet.repositories.WalletRepository;
-import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
@@ -107,6 +105,11 @@ public class WalletService extends GenericServiceImpl<WalletDTO,String,Wallet> {
     protected WalletDTO convertToDTO(Wallet entity) {
         return new WalletDTO(entity);
     }
+
+	@Override
+	protected Wallet convertToE(WalletDTO dto) {
+		return new Wallet(dto);
+	}
 
 }
 

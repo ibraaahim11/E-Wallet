@@ -3,6 +3,7 @@ package com.vois.e_wallet.controllers;
 import com.vois.e_wallet.dto.UserDTO;
 import com.vois.e_wallet.entities.User;
 import com.vois.e_wallet.services.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,8 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> saveUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED) ;
+	public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO u) {
+        return new ResponseEntity<>(userService.save(u), HttpStatus.CREATED) ;
 
 	}
 
@@ -42,8 +43,8 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody User user) {
-        return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK) ;
+	public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @Valid @RequestBody UserDTO u) {
+        return new ResponseEntity<>(userService.update(id, u), HttpStatus.OK) ;
 	}
 
 }

@@ -15,8 +15,9 @@ public abstract class GenericServiceImpl<DTO,ID,E> implements GenericService<DTO
 
 
     @Override
-    public DTO save(E entity) {
-        E savedEntity = repository.save(entity);
+    public DTO save(DTO dto) {
+
+        E savedEntity = repository.save(convertToE(dto));
         return convertToDTO(savedEntity);
     }
 
@@ -31,11 +32,11 @@ public abstract class GenericServiceImpl<DTO,ID,E> implements GenericService<DTO
     }
 
     @Override
-    public DTO update(ID id, E entity) {
+    public DTO update(ID id, DTO dto) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Entity not found");
         }
-        E updatedEntity = repository.save(entity);
+        E updatedEntity = repository.save(convertToE(dto));
         return convertToDTO(updatedEntity);
     }
 
@@ -45,5 +46,7 @@ public abstract class GenericServiceImpl<DTO,ID,E> implements GenericService<DTO
     }
 
     protected abstract DTO convertToDTO(E entity);
+    protected abstract E convertToE(DTO dto);
+
 }
 

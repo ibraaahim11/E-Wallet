@@ -1,5 +1,6 @@
 package com.vois.e_wallet.entities;
 
+import com.vois.e_wallet.dto.UserDTO;
 import com.vois.e_wallet.enums.Gender;
 import com.vois.e_wallet.enums.UserRole;
 import jakarta.persistence.*;
@@ -41,5 +42,20 @@ public class User {
 
 
 
+	public User(UserDTO userDTO)
+	{
+
+		if (userDTO != null) {
+			this.id = userDTO.getId();
+			this.fName = userDTO.getFName();
+			this.lName = userDTO.getLName();
+			this.age = userDTO.getAge();
+			this.gender = userDTO.getGender();
+			this.email = userDTO.getEmail();
+			this.joinDate = userDTO.getJoinDate();
+			this.role = userDTO.getRole();
+			this.wallet = new Wallet(userDTO.getWallet());
+		}
+	}
 
 }

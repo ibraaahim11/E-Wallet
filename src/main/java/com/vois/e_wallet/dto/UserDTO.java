@@ -7,6 +7,7 @@ import com.vois.e_wallet.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class UserDTO {
     private Integer age;
     @Enumerated(EnumType.STRING)
 
+
     private Gender gender;
     @NotBlank(message = "User's email must not be blank.")
     @Email(message = "Invalid user email.")
@@ -37,7 +39,7 @@ public class UserDTO {
 
     private LocalDate joinDate;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "User must have a role")
+    @NotNull(message = "User must have a role. USER or ADMIN")
 
     private UserRole role;
 
@@ -45,16 +47,23 @@ public class UserDTO {
 
     public UserDTO(User user)
     {
-        this.id = user.getId();
-        this.fName = user.getFName();
-        this.lName = user.getLName();
-        this.age = user.getAge();
-        this.gender = user.getGender();
-        this.email = user.getEmail();
-        this .joinDate = user.getJoinDate();
-        this.role = user.getRole();
+        if( user != null)
+        {
+            this.id = user.getId();
+            this.fName = user.getFName();
+            this.lName = user.getLName();
+            this.age = user.getAge();
+            this.gender = user.getGender();
+            this.email = user.getEmail();
+            this .joinDate = user.getJoinDate();
+            this.role = user.getRole();
 
-        this.wallet = new WalletDTO(user.getWallet());
+            this.wallet = new WalletDTO(user.getWallet());
+        }
+
+
+
+
     }
 
 }

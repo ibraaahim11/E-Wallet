@@ -53,8 +53,9 @@ public class TransactionService extends GenericServiceImpl<TransactionDTO,String
 
             }
             case TRANSFER:{
-               toWallet =walletService. deposit(t);
+
                fromWallet =walletService. withdraw(t);
+                toWallet =walletService. deposit(t);
 
             }
         }
@@ -70,13 +71,18 @@ public class TransactionService extends GenericServiceImpl<TransactionDTO,String
 
         Transaction savedT = transactionRepository.save(transaction);
 
-        return new TransactionDTO(savedT);
+        return convertToDTO(savedT);
 
     }
 
     @Override
     protected TransactionDTO convertToDTO(Transaction entity) {
         return new TransactionDTO(entity);
+    }
+
+    @Override
+    protected Transaction convertToE(TransactionDTO dto) {
+        return new Transaction(dto);
     }
 
 }

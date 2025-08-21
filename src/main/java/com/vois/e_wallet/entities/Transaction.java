@@ -1,5 +1,6 @@
 package com.vois.e_wallet.entities;
 
+import com.vois.e_wallet.dto.TransactionDTO;
 import com.vois.e_wallet.enums.TransactionType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -35,6 +36,17 @@ public class Transaction {
 
 	@Enumerated(EnumType.STRING)
 	private TransactionType type;
+
+
+	public Transaction(TransactionDTO transactionDTO)
+	{
+		if(transactionDTO != null) {
+			this.id = transactionDTO.getId();
+			this.timestamp = transactionDTO.getTimestamp();
+			this.amount = transactionDTO.getAmount();
+			this.type = transactionDTO.getType();
+		}
+	}
 
 
 }

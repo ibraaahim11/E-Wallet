@@ -2,7 +2,10 @@ package com.vois.e_wallet.dto;
 
 import com.vois.e_wallet.entities.Transaction;
 import com.vois.e_wallet.enums.TransactionType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,22 +25,26 @@ public class TransactionDTO {
 	private String toWalletId;
 	private LocalDateTime timestamp;
     @NotNull(message = "Transaction amount should be present.")
-    @PositiveOrZero(message = "Transaction amount should be positive or zero.")
+	@Positive(message = "Transaction amount must be greater than 0.")
 
     private Float amount;
     @NotNull(message = "Transaction type should be present.")
+	@Enumerated(EnumType.STRING)
 
-    private TransactionType type;
+
+	private TransactionType type;
 
     public TransactionDTO(Transaction transaction)
     {
 
-        this.id = transaction.getId();
-        this.fromWalletId = transaction.getFromWallet() != null ? transaction.getFromWallet().getId() : null;
-        this.toWalletId = transaction.getToWallet() != null ? transaction.getToWallet().getId() : null;
-        this.timestamp = transaction.getTimestamp();
-        this.amount = transaction.getAmount();
-        this.type = transaction.getType();
+		if(transaction != null)
+		{      this.id = transaction.getId();
+			this.fromWalletId = transaction.getFromWallet() != null ? transaction.getFromWallet().getId() : null;
+			this.toWalletId = transaction.getToWallet() != null ? transaction.getToWallet().getId() : null;
+			this.timestamp = transaction.getTimestamp();
+			this.amount = transaction.getAmount();
+			this.type = transaction.getType();}
+
 
     }
 

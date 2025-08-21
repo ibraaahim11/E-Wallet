@@ -22,10 +22,12 @@ public class WalletDTO {
 	private String userId;
 
 
-    public WalletDTO(Wallet wallet)
-    {
-        this.id = wallet.getId();
-        this.balance = wallet.getBalance();
-        this.userId = wallet.getUser().getId();
-    }
+	public WalletDTO(Wallet wallet) {
+		if (wallet != null) {
+			this.id = wallet.getId();
+			this.balance = wallet.getBalance();
+			this.userId = wallet.getUser().getId();
+		}
+
+	}
 }

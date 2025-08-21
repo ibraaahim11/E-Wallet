@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -56,17 +57,17 @@ public class ApplicationErrorHandler {
 
         CustomError error = CustomError.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .message(ex.getMessage())
+                .message(Objects.requireNonNull(ex.getFieldError()).getDefaultMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-  @ExceptionHandler(RuntimeException.class)
-  public ResponseEntity<CustomError> handleRunTimeException(RuntimeException ex) {
-    CustomError error = CustomError.builder()
-        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-        .message("Internal server error. See logs for details.")
-        .build();
-    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+//  @ExceptionHandler(RuntimeException.class)
+//  public ResponseEntity<CustomError> handleRunTimeException(RuntimeException ex) {
+//    CustomError error = CustomError.builder()
+//        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+//        .message("Internal server error. See logs for details.")
+//        .build();
+//    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//  }
 }

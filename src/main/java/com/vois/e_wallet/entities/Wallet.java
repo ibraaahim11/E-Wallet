@@ -1,6 +1,7 @@
 package com.vois.e_wallet.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vois.e_wallet.dto.WalletDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,6 @@ public class Wallet {
 	private Float balance;
 
 	@OneToOne(mappedBy = "wallet")
-	@JsonBackReference
 	private User user;
 
 	@OneToMany(mappedBy = "fromWallet")
@@ -40,6 +40,14 @@ public class Wallet {
 
 
 	private List<Transaction> receivedTransactions = new ArrayList<>();
+
+	public Wallet(WalletDTO walletDTO) {
+		if (walletDTO != null) {
+			this.id = walletDTO.getId();
+			this.balance = walletDTO.getBalance();
+		}
+	}
+
 
 
 

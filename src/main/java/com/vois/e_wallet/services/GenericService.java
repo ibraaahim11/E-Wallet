@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenericService<DTO, ID, E> {
-    DTO save(E entity);
+    DTO save(DTO dto);
     Optional<DTO> findById(ID id);
     List<DTO> findAll();
-    DTO update(ID id, E entity);
+    DTO update(ID id, DTO dto);
     void deleteById(ID id);
 }
