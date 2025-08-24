@@ -45,6 +45,9 @@ public class Wallet {
 		if (walletDTO != null) {
 			this.id = walletDTO.getId();
 			this.balance = walletDTO.getBalance();
+			this.sentTransactions = new ArrayList<>();
+
+			this.receivedTransactions = new ArrayList<>();
 		}
 	}
 

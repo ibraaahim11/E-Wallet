@@ -3,9 +3,11 @@ package com.vois.e_wallet.dto;
 import com.vois.e_wallet.enums.TransactionType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class TransactionAction {
 
 

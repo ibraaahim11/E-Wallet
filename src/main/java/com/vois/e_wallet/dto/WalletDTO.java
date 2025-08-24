@@ -26,7 +26,9 @@ public class WalletDTO {
 		if (wallet != null) {
 			this.id = wallet.getId();
 			this.balance = wallet.getBalance();
-			this.userId = wallet.getUser().getId();
+			if(wallet.getUser() != null) {
+				this.userId = wallet.getUser().getId();
+			}
 		}
 
 	}
